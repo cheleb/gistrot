@@ -1,77 +1,49 @@
-import scala.scalanative.unsafe._
+import libgit.functions.*
+import libgit.types.*
 
-import scalanative.unsafe.stackalloc
-import scalanative.libc.stdlib
-import scala.scalanative.runtime.struct
+import scala.scalanative.unsafe.*
+import scala.scalanative.libc.*
+import libgit.predef
 
-object Main {
-  def main(args: Array[String]): Unit = {
-    import LibGit2._
+import scala.scalanative.unsigned.*
+
+import gistrot.*
+
+@main def hello =
+  Zone { implicit z =>
     git_libgit2_init()
-
-    val repo: Ptr[Ptr[GitRepository]] = stackalloc[Ptr[GitRepository]]()
+    val repoRef: Ptr[Ptr[git_repository]] = alloc[Ptr[git_repository]](1)
     val res = git_repository_open(
-      repo,
-      c"/Users/onouguier/projects/perso/hellos/gistrot"
+      repoRef,
+      c"."
     )
-    if (git_repository_is_bare(!repo) == 1)
-      println("Bare")
-    else
-      println("Workdir")
 
-    val status = stackalloc[Ptr[GitStatusList]]()
-    println(status)
-    val opts = stackalloc[git_status_options]()
+//    stdio.printf(c"Repo path: %s\n", git_repository_path(!repoRef))
 
+    val head = alloc[Ptr[git_reference]](1)
+
+    val error = git_repository_head(head, !repoRef)
+
+    if (error == 0) {
+      val branch = git_reference_shorthand(!head)
+      stdio.printf(c"%s ", branch)
+    }
+    /*
+    val it = alloc[Ptr[git_branch_iterator]](1)
+    git_branch_iterator_new(it, !repoRef, git_branch_t.GIT_BRANCH_REMOTE)
+
+    val gitref = alloc[Ptr[git_reference]](1)
+    val branch_type = alloc[git_branch_t](1)
+    val str = alloc[Ptr[CChar]](100)
+
+    while git_branch_next(gitref, branch_type, !it) == 0 do
+      git_branch_name(str, !gitref)
+
+      stdio.printf(c"Branch: %s\n", !str)
+     */
+    diffs(repoRef).foreach { case (st, count) =>
+      print(s"$st $count ")
+    }
+
+    git_libgit2_shutdown()
   }
-}
-
-@link("git2")
-@extern
-object LibGit2 {
-  type GitRepository = extern
-  type GitStatusList = extern
-  type GitStatusOptions = extern
-  type git_status_show_t = extern
-  type git_strarray = extern
-  type git_tree = extern
-  type git_status_options = CStruct5[
-    Int,
-    git_status_show_t,
-    Int,
-    git_strarray,
-    Ptr[
-      git_tree
-    ]
-  ]
-
-  type status_opts = CStruct4[git_status_options, Ptr[Char], Ptr[Char], Int]
-
-  /*
-FORMAT_DEFAULT   = 0,
-  FORMAT_LONG      = 1,
-  FORMAT_SHORT     = 2,
-  FORMAT_PORCELAIN = 3,
-   */
-  class status_format_t(val value: CInt) extends AnyVal
-  val FORMAT_DEFAULT: status_format_t = extern
-  val FORMAT_SHORT: status_format_t = extern
-  val FORMAT_PORCELAIN: status_format_t = extern
-
-  def git_libgit2_init(): Unit = extern
-
-  //int git_repository_open(git_repository **out, const char *path);
-  def git_repository_open(out: Ptr[Ptr[GitRepository]], path: CString): Int =
-    extern
-
-  //int git_status_list_new(git_status_list **out, git_repository *repo, const git_status_options *opts);
-  def git_status_list_new(
-      out: Ptr[Ptr[GitStatusList]],
-      repo: Ptr[GitRepository],
-      opts: Ptr[GitStatusOptions]
-  ): Int = extern
-  //size_t git_status_list_entrycount(git_status_list *statuslist);
-  def git_status_list_entrycount(status: GitStatusList): CSize = extern
-
-  def git_repository_is_bare(repo: Ptr[GitRepository]): Int = extern
-}
