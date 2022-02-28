@@ -13,6 +13,8 @@ enum FileStatus(val icon: String):
   case WT_NEW extends FileStatus("👀")
   case WT_MODIFIED extends FileStatus("🚧")
   case WT_DELETED extends FileStatus("🗑️")
+  case INDEX_NEW extends FileStatus("🚀")
+  case INDEX_DELETE extends FileStatus("🔥")
   case OTHER extends FileStatus("⁉️")
 
 object Options:
@@ -36,11 +38,16 @@ def diffs(repoRef: Ptr[Ptr[git_repository]])(using
     .map { i =>
       val statusEntry = git_status_byindex(!statusPtr, i.toUInt)
       (!statusEntry).status match {
-        case st if st.is(GIT_STATUS_WT_NEW)      => FileStatus.WT_NEW
-        case st if st.is(GIT_STATUS_WT_MODIFIED) => FileStatus.WT_MODIFIED
-        case st if st.is(GIT_STATUS_WT_DELETED)  => FileStatus.WT_DELETED
-        case _                                   => FileStatus.OTHER
+        case st if st.is(GIT_STATUS_WT_NEW)         => FileStatus.WT_NEW
+        case st if st.is(GIT_STATUS_WT_MODIFIED)    => FileStatus.WT_MODIFIED
+        case st if st.is(GIT_STATUS_INDEX_NEW)      => FileStatus.INDEX_NEW
+        case st if st.is(GIT_STATUS_INDEX_MODIFIED) => FileStatus.INDEX_NEW
+        case st if st.is(GIT_STATUS_INDEX_DELETED)  => FileStatus.INDEX_DELETE
+        case st if st.is(GIT_STATUS_WT_DELETED)     => FileStatus.WT_DELETED
+        case o =>
+          FileStatus.OTHER
       }
+
     }
     .groupBy(identity)
     .mapValues(_.size)
