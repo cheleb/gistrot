@@ -8,21 +8,28 @@ import java.nio.file.Paths
 inThisBuild(
   Seq(
     scalacOptions ++= Seq("-Yexplicit-nulls", "-Xfatal-warnings"),
-    scalafmtOnCompile := true
+    scalafmtOnCompile := true,
+    scalaVersion := "3.1.1",
+//    addCompilerPlugin("org.scalameta" % "semanticdb-scalac" % "4.5.0" cross CrossVersion.full),
+//    scalacOptions += "-Yrangepos"
   )
 )
-scalaVersion := "3.1.1"
+
+
+val gistrot = project.in(file("app"))
+  .settings(
+    nativeLinkStubs := true,
+    nativeConfig ~= {
+      _.withLTO(LTO.default)
+        .withMode(Mode.debug)
+        .withGC(GC.none)
+    }
+
+  )
+  .enablePlugins(ScalaNativePlugin)
+  .dependsOn(libgit2)
 
 // Set to false or remove if you want to show stubs as linking errors
-nativeLinkStubs := true
-
-nativeConfig ~= {
-  _.withLTO(LTO.default)
-    .withMode(Mode.debug)
-    .withGC(GC.none)
-}
-
-enablePlugins(ScalaNativePlugin)
 
 lazy val libgit2 = project
   .in(file("libgit2"))
