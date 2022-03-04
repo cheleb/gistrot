@@ -33,7 +33,7 @@ def diffs(repoRef: Ptr[Ptr[git_repository]])(using
   val statusPtr = alloc[Ptr[git_status_list]](1)
   val stats = git_status_list_new(statusPtr, !repoRef, Options.status)
   val diffs = git_status_list_entrycount(!statusPtr)
-//  println(diffs)
+
   (0 until diffs.toInt)
     .map { i =>
       val statusEntry = git_status_byindex(!statusPtr, i.toUInt)
