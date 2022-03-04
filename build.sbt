@@ -24,7 +24,7 @@ nativeConfig ~= {
 
 enablePlugins(ScalaNativePlugin)
 
-/*
+
 lazy val libgit2 = project
   .in(file("libgit2"))
   .enablePlugins(ScalaNativePlugin, BindgenPlugin)
@@ -67,5 +67,3 @@ lazy val libgit2 = project
         )
     }
   )
-
-  */
