@@ -11,5 +11,5 @@ Simple and fast ZSH prompt for your git repository status.
 ## Build from source
 
 ```shell
-SN_BINDGEN_VERSION='0.0.6+3-5375d615+20220225-2143-SNAPSHOT' sbt 
+SN_BINDGEN_VERSION='0.0.6+10-20783bcd-SNAPSHOT' sbt 
 ```

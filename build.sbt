@@ -1,3 +1,4 @@
+import bindgen.interface.Binding
 import scala.scalanative.build._
 import bindgen.interface.Platform
 import bindgen.interface.LogLevel
@@ -15,7 +16,6 @@ scalaVersion := "3.1.1"
 // Set to false or remove if you want to show stubs as linking errors
 nativeLinkStubs := true
 
-
 nativeConfig ~= {
   _.withLTO(LTO.default)
     .withMode(Mode.debug)
@@ -23,7 +23,6 @@ nativeConfig ~= {
 }
 
 enablePlugins(ScalaNativePlugin)
-
 
 lazy val libgit2 = project
   .in(file("libgit2"))
@@ -34,19 +33,21 @@ lazy val libgit2 = project
       // As we're not installing libgit globally,
       // we're just point binaries to the location of compiled
       // dynamic libraries
-      "LD_LIBRARY_PATH" -> (baseDirectory.value  / "build").toString,
+      "LD_LIBRARY_PATH" -> (baseDirectory.value / "build").toString,
       "DYLD_LIBRARY_PATH" -> (baseDirectory.value / "build").toString
     ),
     // Generate bindings to Tree Sitter's main API
-    Bindgen.bindings := { builder =>
+    bindgenBindings := {
       val gitinclude = baseDirectory.value / "include"
 
-      builder.define(
-        gitinclude / "git2.h",
-        "libgit",
-        linkName = Some("git2"),
-        cImports = List("git2.h"),
-        clangFlags = List(s"-I$gitinclude")
+      Seq(
+        Binding(
+          gitinclude / "git2.h",
+          "libgit",
+          linkName = Some("git2"),
+          cImports = List("git2.h"),
+          clangFlags = List(s"-I$gitinclude")
+        )
       )
     },
     nativeConfig := {
