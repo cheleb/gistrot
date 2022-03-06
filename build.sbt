@@ -7,32 +7,24 @@ import java.nio.file.Paths
 
 inThisBuild(
   Seq(
+    resolvers += Resolver.sonatypeRepo("snapshots"),
     scalacOptions ++= Seq("-Yexplicit-nulls", "-Xfatal-warnings"),
     scalafmtOnCompile := true,
     scalaVersion := "3.1.1",
-//    addCompilerPlugin("org.scalameta" % "semanticdb-scalac" % "4.5.0" cross CrossVersion.full),
-//    scalacOptions += "-Yrangepos"
+    libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
+    testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
+    libraryDependencies += "org.scala-native" %% "junit-runtime_native0.4" % "0.4.4" % Test,
+    addCompilerPlugin(
+      "org.scala-native" % "junit-plugin" % nativeVersion cross CrossVersion.full
+    )
   )
 )
 
 
-val gistrot = project.in(file("app"))
-  .settings(
-    nativeLinkStubs := true,
-    nativeConfig ~= {
-      _.withLTO(LTO.default)
-        .withMode(Mode.debug)
-        .withGC(GC.none)
-    }
-
-  )
-  .enablePlugins(ScalaNativePlugin)
-  .dependsOn(libgit2)
-
 // Set to false or remove if you want to show stubs as linking errors
 
-lazy val libgit2 = project
-  .in(file("libgit2"))
+
+lazy val libgit2 = project.in(file("libgit2"))
   .enablePlugins(ScalaNativePlugin, BindgenPlugin)
   .settings(
     scalaVersion := "3.1.1",
@@ -75,3 +67,20 @@ lazy val libgit2 = project
         )
     }
   )
+
+  
+
+
+lazy val gistrot = project.in(file("app"))
+  .settings(
+    nativeLinkStubs := true,
+    nativeConfig ~= {
+      _.withLTO(LTO.default)
+        .withMode(Mode.debug)
+        .withGC(GC.none)
+    }
+  )
+  .enablePlugins(ScalaNativePlugin)
+  .dependsOn(libgit2)
+
+  
