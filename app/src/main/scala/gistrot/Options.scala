@@ -23,7 +23,8 @@ object Options:
     git_status_options_init(statusOptionPtr, 1.toUInt)
     val statusOption = !statusOptionPtr
     statusOption.show = git_status_show_t.GIT_STATUS_SHOW_INDEX_AND_WORKDIR
-    statusOption.flags = git_status_opt_t.GIT_STATUS_OPT_EXCLUDE_SUBMODULES.uint
+    statusOption.flags = (git_status_opt_t.GIT_STATUS_OPT_EXCLUDE_SUBMODULES
+      | git_status_opt_t.GIT_STATUS_OPT_INCLUDE_UNTRACKED).uint
     statusOptionPtr
 
 def diffs(repoRef: Ptr[Ptr[git_repository]])(using

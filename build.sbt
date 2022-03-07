@@ -20,11 +20,10 @@ inThisBuild(
   )
 )
 
-
 // Set to false or remove if you want to show stubs as linking errors
 
-
-lazy val libgit2 = project.in(file("libgit2"))
+lazy val libgit2 = project
+  .in(file("libgit2"))
   .enablePlugins(ScalaNativePlugin, BindgenPlugin)
   .settings(
     scalaVersion := "3.1.1",
@@ -68,10 +67,8 @@ lazy val libgit2 = project.in(file("libgit2"))
     }
   )
 
-  
-
-
-lazy val gistrot = project.in(file("app"))
+lazy val gistrot = project
+  .in(file("app"))
   .settings(
     nativeLinkStubs := true,
     nativeConfig ~= {
@@ -82,5 +79,3 @@ lazy val gistrot = project.in(file("app"))
   )
   .enablePlugins(ScalaNativePlugin)
   .dependsOn(libgit2)
-
-  
