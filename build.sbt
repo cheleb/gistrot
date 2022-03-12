@@ -32,12 +32,12 @@ lazy val libgit2 = project
       // As we're not installing libgit globally,
       // we're just point binaries to the location of compiled
       // dynamic libraries
-      "LD_LIBRARY_PATH" -> (baseDirectory.value / "build").toString,
-      "DYLD_LIBRARY_PATH" -> (baseDirectory.value / "build").toString
+      "LD_LIBRARY_PATH" -> (baseDirectory.value / "native" / "build").toString,
+      "DYLD_LIBRARY_PATH" -> (baseDirectory.value / "native" / "build").toString
     ),
     // Generate bindings to Tree Sitter's main API
     bindgenBindings := {
-      val gitinclude = baseDirectory.value / "include"
+      val gitinclude = baseDirectory.value / "native" / "include"
 
       Seq(
         Binding(
@@ -51,9 +51,9 @@ lazy val libgit2 = project
     },
     nativeConfig := {
       val base = baseDirectory.value
-      val libFolder = base / "build"
-      val headersFolder = base / "include"
-      val conf = nativeConfig.value
+      val libFolder = base / "native" / "build"
+      val headersFolder = base / "native" / "include"
+      val conf = nativeConfig.value 
 
       conf
         .withLinkingOptions(
