@@ -11,6 +11,7 @@ inThisBuild(
     scalacOptions ++= Seq("-Yexplicit-nulls", "-Xfatal-warnings"),
     scalafmtOnCompile := true,
     scalaVersion := "3.1.1",
+    libraryDependencies += "com.outr" %%% "scribe" % "3.8.0",
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
     libraryDependencies += "org.scala-native" %% "junit-runtime_native0.4" % "0.4.4" % Test,
