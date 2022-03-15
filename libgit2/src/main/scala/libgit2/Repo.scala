@@ -8,6 +8,8 @@ import scala.scalanative.unsafe.*
 import scala.scalanative.unsigned.*
 import scala.collection.MapView
 
+import scala.scalanative.libc.stdio
+
 enum FileStatus(val icon: String):
   override def toString: String = icon
   case WT_NEW extends FileStatus("👀")
@@ -17,7 +19,10 @@ enum FileStatus(val icon: String):
   case INDEX_DELETE extends FileStatus("🔥")
   case OTHER extends FileStatus("⁉️")
 
-class Repo(val repoRef: Ptr[Ptr[git_repository]]) {
+class Repo(
+    val repoRef: Ptr[Ptr[git_repository]],
+    head: Ptr[Ptr[git_reference]]
+) {
 
   def status(using z: Zone): Ptr[git_status_options] =
     val statusOptionPtr = git_status_options()
@@ -29,15 +34,21 @@ class Repo(val repoRef: Ptr[Ptr[git_repository]]) {
     statusOptionPtr
 
   def branchName(using z: Zone): String =
-    val head = alloc[Ptr[git_reference]](1)
+    val branch = git_reference_shorthand(!head)
+    val branchName = fromCString(branch)
+    branchName
 
-    val error = git_repository_head(head, !repoRef)
-
-    if error == 0 then
-      val branch = git_reference_shorthand(!head)
-      val branchName = fromCString(branch)
-      branchName
-    else ""
+  def upstream(using z: Zone): Option[String] =
+    val upstream = alloc[Ptr[git_reference]](1)
+    val shorthand =
+      if 0 == git_branch_upstream(
+          upstream,
+          !head
+        )
+      then Some(fromCString(git_reference_shorthand(!upstream)))
+      else None
+    git_reference_free(!upstream)
+    shorthand
 
   def diffs()(using z: Zone): MapView[FileStatus, Int] =
     import git_status_t.*
