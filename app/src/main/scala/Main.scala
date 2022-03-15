@@ -15,13 +15,22 @@ import java.nio.charset.StandardCharsets
   Zone { implicit z =>
     git_libgit2_init()
 
-    val repo = LibGit2.repo(c".")
+    LibGit2.repo(c".").foreach { repo =>
 
-    repo.diffs().foreach { case (st, count) =>
-      print(s"$st $count ")
+      repo.diffs().foreach { case (st, count) =>
+        print(s"$st $count ")
+      }
+      val branchName = repo.branchName
+      val upstream = repo.upstream
+      print(branchName)
+      upstream match {
+        case Some(s"origin/$branchName") =>
+//          scribe.info("Yes, it's that simple!")
+        case Some(other) => print(s" ($upstream)")
+        case _           => print("❓")
+      }
+
     }
-
-    print(repo.branchName)
 
     git_libgit2_shutdown()
   }
