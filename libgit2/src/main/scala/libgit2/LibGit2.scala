@@ -4,6 +4,10 @@ import libgit.functions.*
 import libgit.types.*
 import scala.scalanative.unsafe.*
 
+/**
+ * Scala friendly wrappers
+*/
+
 object LibGit2:
   def repo(path: CString)(implicit z: Zone): Option[Repo] =
     val repoRef: Ptr[Ptr[git_repository]] = alloc[Ptr[git_repository]](1)
