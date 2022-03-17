@@ -21,13 +21,22 @@ import java.nio.charset.StandardCharsets
         print(s"$st $count ")
       }
       val branchName = repo.branchName
-      val upstream = repo.upstream
-      print(branchName)
-      upstream match {
-        case Some(s"origin/$branchName") =>
-//          scribe.info("Yes, it's that simple!")
-        case Some(other) => print(s" ($upstream)")
-        case _           => print("❓")
+
+      repo.upstream match {
+        case Some(upstream) =>
+          for {
+            upstream <- repo.upstreamName
+            (ahead, behind) <- repo.upstreamStatus
+          } yield
+            if ahead > 0 then print(s"⬆️ +$ahead ")
+            print(branchName)
+            upstream match {
+              case s"origin/$branchName" =>
+              case _                     => print(s" ($upstream)")
+            }
+            if behind > 0 then print(s" ⬇️ +$behind")
+        case None =>
+          print(s" $branchName ❓")
       }
 
     }

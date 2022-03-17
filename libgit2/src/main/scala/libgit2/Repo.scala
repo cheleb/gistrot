@@ -19,9 +19,10 @@ enum FileStatus(val icon: String):
   case INDEX_DELETE extends FileStatus("🔥")
   case OTHER extends FileStatus("⁉️")
 
-class Repo(
-    val repoRef: Ptr[Ptr[git_repository]],
-    head: Ptr[Ptr[git_reference]]
+case class Repo(
+    val repoRef: Ptr[git_repository],
+    head: Ptr[git_reference],
+    upstream: Option[Ptr[git_reference]]
 ) {
 
   def status(using z: Zone): Ptr[git_status_options] =
@@ -34,26 +35,41 @@ class Repo(
     statusOptionPtr
 
   def branchName(using z: Zone): String =
-    val branch = git_reference_shorthand(!head)
+    val branch = git_reference_shorthand(head)
     val branchName = fromCString(branch)
     branchName
 
-  def upstream(using z: Zone): Option[String] =
-    val upstream = alloc[Ptr[git_reference]](1)
-    val shorthand =
-      if 0 == git_branch_upstream(
-          upstream,
-          !head
-        )
-      then Some(fromCString(git_reference_shorthand(!upstream)))
-      else None
-    git_reference_free(!upstream)
-    shorthand
+  def upstreamName(using z: Zone): Option[String] =
+    upstream.map { upstream =>
+      val shorthand =
+        fromCString(git_reference_shorthand(upstream))
+      shorthand
+
+    }
+  def upstreamStatus(using z: Zone): Option[(Int, Int)] =
+    upstream.map { upstream =>
+
+      val ahead = alloc[size_t](1)
+      val behind = alloc[size_t](1)
+
+      val masterOid = alloc[git_oid](1)
+      val originMasterOid = alloc[git_oid](1)
+
+      git_reference_name_to_id(masterOid, repoRef, git_reference_name(head));
+      git_reference_name_to_id(
+        originMasterOid,
+        repoRef,
+        git_reference_name(upstream)
+      );
+
+      git_graph_ahead_behind(ahead, behind, repoRef, masterOid, originMasterOid)
+      ((!ahead).toInt, (!behind).toInt)
+    }
 
   def diffs()(using z: Zone): MapView[FileStatus, Int] =
     import git_status_t.*
     val statusPtr = alloc[Ptr[git_status_list]](1)
-    val stats = git_status_list_new(statusPtr, !repoRef, status)
+    val stats = git_status_list_new(statusPtr, repoRef, status)
     val diffs = git_status_list_entrycount(!statusPtr)
 
     (0 until diffs.toInt)
