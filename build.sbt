@@ -65,7 +65,8 @@ lazy val libgit2 = project
         .withCompileOptions(
           conf.compileOptions ++ List(s"-I$headersFolder")
         )
-    }
+    },
+    libraryDependencies += "com.outr" %%% "scribe" % "3.8.2"
   )
 
 lazy val gistrot = project

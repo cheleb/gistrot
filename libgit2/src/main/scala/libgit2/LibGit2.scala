@@ -8,17 +8,16 @@ import scala.scalanative.unsafe.*
   */
 
 object LibGit2:
-  def zozo[P](p: P)(f: P => CInt): Option[P] =
-    if f(p) == 0 then Some(p)
+  private def asOption[P](f: Ptr[Ptr[P]] => CInt)(implicit
+      z: Zone
+  ): Option[Ptr[Ptr[P]]] =
+    val repoRef = alloc[Ptr[P]](1)
+    if f(repoRef) == 0 then Some(repoRef)
     else None
 
   def repo(path: CString)(implicit z: Zone): Option[Repo] =
-    val repoRef = alloc[Ptr[git_repository]](1)
-    val headRef = alloc[Ptr[git_reference]](1)
-    val upstreamRef = alloc[Ptr[git_reference]](1)
-
     for {
-      repo <- zozo(repoRef)(git_repository_open(_, c"."))
-      head <- zozo(headRef)(git_repository_head(_, !repoRef))
-      upstream = zozo(upstreamRef)(git_branch_upstream(_, !headRef))
-    } yield Repo(!repoRef, !head, upstream.map(!_))
+      repo <- asOption(git_repository_open(_, c"."))
+      head <- asOption(git_repository_head(_, !repo))
+      upstream = asOption(git_branch_upstream(_, !head))
+    } yield Repo(!repo, !head, upstream.map(!_))
