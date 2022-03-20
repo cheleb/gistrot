@@ -14,10 +14,17 @@ object LibGit2:
     val repoRef = alloc[Ptr[P]](1)
     if f(repoRef) == 0 then Some(repoRef)
     else None
+  private def repoAsOption[P](f: Ptr[git_buf] => CInt)(implicit
+      z: Zone
+  ): Option[Ptr[git_buf]] =
+    val repoRef = alloc[git_buf](1)
+    if f(repoRef) == 0 then Some(repoRef)
+    else None
 
   def repo(path: CString)(implicit z: Zone): Option[Repo] =
     for {
-      repo <- asOption(git_repository_open(_, c"."))
+      path <- repoAsOption(git_repository_discover(_, c".", 1, c""))
+      repo <- asOption(git_repository_open(_, (!path).ptr))
       head <- asOption(git_repository_head(_, !repo))
       upstream = asOption(git_branch_upstream(_, !head))
     } yield Repo(!repo, !head, upstream.map(!_))

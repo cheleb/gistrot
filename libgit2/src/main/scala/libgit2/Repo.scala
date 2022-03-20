@@ -9,6 +9,7 @@ import scala.scalanative.unsigned.*
 import scala.collection.MapView
 
 import scala.scalanative.libc.stdio
+import scala.scalanative.runtime.libc
 
 enum FileStatus(val icon: String):
   override def toString: String = icon
@@ -34,7 +35,7 @@ case class Repo(
       | git_status_opt_t.GIT_STATUS_OPT_INCLUDE_UNTRACKED).uint
     statusOptionPtr
 
-  def branchName(using z: Zone): String =
+  def branchName: String =
     val branch = git_reference_shorthand(head)
     val branchName = fromCString(branch)
     branchName
