@@ -36,7 +36,7 @@ import java.nio.charset.StandardCharsets
             }
             if behind > 0 then print(s" ⬇️ +$behind")
         case None =>
-          print(s" $branchName ❓")
+          print(s"$branchName ❓")
       }
 
     }
