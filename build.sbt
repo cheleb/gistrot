@@ -14,7 +14,7 @@ inThisBuild(
     
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
-    libraryDependencies += "org.scala-native" %% "junit-runtime_native0.4" % "0.4.4" % Test,
+    libraryDependencies += "org.scala-native" %% "junit-runtime_native0.4" % "0.4.5" % Test,
     addCompilerPlugin(
       "org.scala-native" % "junit-plugin" % nativeVersion cross CrossVersion.full
     )
@@ -66,7 +66,7 @@ lazy val libgit2 = project
           conf.compileOptions ++ List(s"-I$headersFolder")
         )
     },
-    libraryDependencies += "com.outr" %%% "scribe" % "3.8.2"
+    libraryDependencies += "com.outr" %%% "scribe" % "3.9.0"
   )
 
 lazy val gistrot = project
@@ -78,7 +78,7 @@ lazy val gistrot = project
         .withMode(Mode.debug)
         .withGC(GC.none)
     },
-    libraryDependencies += "com.outr" %%% "scribe" % "3.8.2"
+    libraryDependencies += "com.outr" %%% "scribe" % "3.9.0"
   )
   .enablePlugins(ScalaNativePlugin)
   .dependsOn(libgit2)
