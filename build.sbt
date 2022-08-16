@@ -5,12 +5,14 @@ import bindgen.interface.LogLevel
 
 import java.nio.file.Paths
 
+val scribeVersion = "3.10.2"
+
 inThisBuild(
   Seq(
     resolvers += Resolver.sonatypeRepo("snapshots"),
     scalacOptions ++= Seq("-Yexplicit-nulls", "-Xfatal-warnings"),
     scalafmtOnCompile := true,
-    scalaVersion := "3.1.1",
+    scalaVersion := "3.1.3",
     
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
@@ -66,7 +68,7 @@ lazy val libgit2 = project
           conf.compileOptions ++ List(s"-I$headersFolder")
         )
     },
-    libraryDependencies += "com.outr" %%% "scribe" % "3.9.0"
+    libraryDependencies += "com.outr" %%% "scribe" % scribeVersion
   )
 
 lazy val gistrot = project
@@ -78,7 +80,7 @@ lazy val gistrot = project
         .withMode(Mode.debug)
         .withGC(GC.none)
     },
-    libraryDependencies += "com.outr" %%% "scribe" % "3.9.0"
+    libraryDependencies += "com.outr" %%% "scribe" % scribeVersion
   )
   .enablePlugins(ScalaNativePlugin)
   .dependsOn(libgit2)
