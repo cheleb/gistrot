@@ -12,11 +12,11 @@ inThisBuild(
     resolvers += Resolver.sonatypeRepo("snapshots"),
     scalacOptions ++= Seq("-Yexplicit-nulls", "-Xfatal-warnings"),
     scalafmtOnCompile := true,
-    scalaVersion := "3.1.3",
+    scalaVersion := "3.2.0",
     
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
-    libraryDependencies += "org.scala-native" %% "junit-runtime_native0.4" % "0.4.5" % Test,
+    libraryDependencies += "org.scala-native" %% "junit-runtime_native0.4" % "0.4.7" % Test,
     addCompilerPlugin(
       "org.scala-native" % "junit-plugin" % nativeVersion cross CrossVersion.full
     )
