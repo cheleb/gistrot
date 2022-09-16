@@ -1,6 +1,5 @@
 import bindgen.interface.Binding
 import scala.scalanative.build._
-import bindgen.interface.Platform
 import bindgen.interface.LogLevel
 
 import java.nio.file.Paths
