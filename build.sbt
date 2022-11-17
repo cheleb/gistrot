@@ -4,7 +4,7 @@ import bindgen.interface.LogLevel
 
 import java.nio.file.Paths
 
-val scribeVersion = "3.10.3"
+val scribeVersion = "3.10.4"
 
 inThisBuild(
   Seq(
@@ -15,7 +15,7 @@ inThisBuild(
     
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
-    libraryDependencies += "org.scala-native" %% "junit-runtime_native0.4" % "0.4.7" % Test,
+    libraryDependencies += "org.scala-native" %% "junit-runtime_native0.4" % "0.4.8" % Test,
     addCompilerPlugin(
       "org.scala-native" % "junit-plugin" % nativeVersion cross CrossVersion.full
     )
