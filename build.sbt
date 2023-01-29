@@ -8,11 +8,10 @@ val scribeVersion = "3.10.4"
 
 inThisBuild(
   Seq(
-    resolvers += Resolver.sonatypeRepo("snapshots"),
+    resolvers ++= Resolver.sonatypeOssRepos("snapshots"),
     scalacOptions ++= Seq("-Yexplicit-nulls", "-Xfatal-warnings"),
     scalafmtOnCompile := true,
-    scalaVersion := "3.2.0",
-    
+    scalaVersion := "3.2.2",
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
     libraryDependencies += "org.scala-native" %% "junit-runtime_native0.4" % "0.4.8" % Test,
@@ -54,7 +53,7 @@ lazy val libgit2 = project
       val base = baseDirectory.value
       val libFolder = base / "native" / "build"
       val headersFolder = base / "native" / "include"
-      val conf = nativeConfig.value 
+      val conf = nativeConfig.value
 
       conf
         .withLinkingOptions(
@@ -76,7 +75,7 @@ lazy val gistrot = project
     nativeLinkStubs := true,
     nativeConfig ~= {
       _.withLTO(LTO.default)
-        .withMode(Mode.debug)
+        .withMode(Mode.releaseSize)
         .withGC(GC.none)
     },
     libraryDependencies += "com.outr" %%% "scribe" % scribeVersion
