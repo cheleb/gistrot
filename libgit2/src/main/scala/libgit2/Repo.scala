@@ -89,6 +89,7 @@ case class Repo(
 
       }
       .groupBy(identity)
+      .view
       .mapValues(_.size)
 
 }

@@ -15,6 +15,7 @@ inThisBuild(
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
     libraryDependencies += "org.scala-native" %% "junit-runtime_native0.4" % "0.4.8" % Test,
+//    scalacOptions += "-deprecation",
     addCompilerPlugin(
       "org.scala-native" % "junit-plugin" % nativeVersion cross CrossVersion.full
     )
@@ -27,7 +28,7 @@ lazy val libgit2 = project
   .in(file("libgit2"))
   .enablePlugins(ScalaNativePlugin, BindgenPlugin)
   .settings(
-    scalaVersion := "3.1.1",
+    scalaVersion := "3.2.2",
     Compile / run / envVars := Map(
       // As we're not installing libgit globally,
       // we're just point binaries to the location of compiled
