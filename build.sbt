@@ -41,13 +41,12 @@ lazy val libgit2 = project
       val gitinclude = baseDirectory.value / "native" / "include"
 
       Seq(
-        Binding(
-          gitinclude / "git2.h",
-          "libgit",
-          linkName = Some("git2"),
-          cImports = List("git2.h"),
-          clangFlags = List(s"-I$gitinclude")
-        )
+        Binding
+          .builder(gitinclude / "git2.h", "libgit")
+          .withLinkName("git2")
+          .withCImports(Seq("git2.h"))
+          .withClangFlags(Seq(s"-I$gitinclude"))
+          .build
       )
     },
     nativeConfig := {
