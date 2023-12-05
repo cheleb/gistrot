@@ -67,12 +67,21 @@ case class Repo(
       ((!ahead).toInt, (!behind).toInt)
     }
 
+  /** Get the files status of the repository.
+    *
+    * @param z
+    *   Zone to allocate memory in
+    * @return
+    */
   def diffs()(using z: Zone): MapView[FileStatus, Int] =
     import git_status_t.*
+    // Allocate a pointer to a pointer to a status list
     val statusPtr = alloc[Ptr[git_status_list]](1)
+    // Get the status list
     val stats = git_status_list_new(statusPtr, repoRef, status)
+    // Get the number of entries in the status list
     val diffs = git_status_list_entrycount(!statusPtr)
-
+    // Iterate over the entries in the status list
     (0 until diffs.toInt)
       .map { i =>
         val statusEntry = git_status_byindex(!statusPtr, i.toUInt)
