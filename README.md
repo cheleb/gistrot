@@ -10,6 +10,8 @@ Simple and fast ZSH prompt for your git repository status.
 
 ## Build from source
 
+To use a specific version of sn-bindgen, set the `SN_BINDGEN_VERSION` environment variable.
+
 ```shell
 SN_BINDGEN_VERSION='0.0.6+10-20783bcd-SNAPSHOT' sbt 
 ```
