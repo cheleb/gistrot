@@ -78,7 +78,9 @@ lazy val gistrot = project
         .withMode(Mode.releaseSize)
         .withGC(GC.none)
     },
-    libraryDependencies += "com.outr" %%% "scribe" % scribeVersion
+    libraryDependencies += "com.outr" %%% "scribe" % scribeVersion,
+    libraryDependencies += "com.monovore" %%% "decline" % "2.4.1",
+    libraryDependencies += "com.lihaoyi" %%% "os-lib" % "0.9.2"
   )
   .enablePlugins(ScalaNativePlugin)
   .dependsOn(libgit2)

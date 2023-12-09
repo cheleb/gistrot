@@ -11,35 +11,53 @@ import libgit2.*
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
-@main def gistrotPrompt =
+@main def gistrotPrompt(spaces: Int, fill: String) =
+  val pwd =
+    if (os.pwd.startsWith(os.home)) then
+      s"~/${os.pwd.relativeTo(os.home).toString}"
+    else os.pwd.toString
+
   Zone { implicit z =>
     git_libgit2_init()
 
-    LibGit2.repo(c".").foreach { repo =>
+    LibGit2.repo(c".").map { repo =>
 
-      repo.diffs().foreach { case (st, count) =>
-        print(s"$st $count ")
-      }
+      val diffs = repo
+        .diffs()
+        .map { case (st, count) =>
+          s"$st $count"
+        }
+        .mkString(" ")
       val branchName = repo.branchName
 
-      repo.upstream match {
+      val branch = repo.upstream match {
         case Some(upstream) =>
-          for {
+          val branch = for {
             upstream <- repo.upstreamName
             (ahead, behind) <- repo.upstreamStatus
           } yield
-            if ahead > 0 then print(s"⬆️ +$ahead ")
-            print(branchName)
-            upstream match {
-              case s"origin/$branchName" =>
-              case _                     => print(s" ($upstream)")
+            val toPush =
+              if ahead > 0 then s"⬆️ +$ahead "
+              else ""
+            val up = upstream match {
+              case s"origin/$branchName" => ""
+              case _                     => s" ($upstream)"
             }
-            if behind > 0 then print(s" ⬇️ +$behind")
+            val toPull =
+              if behind > 0 then s" ⬇️ +$behind"
+              else ""
+            s"$toPush $branchName$up$toPull"
+          branch.getOrElse(s"$branchName 💀")
         case None =>
-          print(s"$branchName ❓")
+          s"$branchName ❓"
       }
+      val right = s"$diffs $branch "
 
-    }
+      s"$pwd ${fill * (spaces - pwd.size - right.size)} $right"
+
+    } match
+      case None        => println(pwd)
+      case Some(value) => println(value)
 
     git_libgit2_shutdown()
   }
