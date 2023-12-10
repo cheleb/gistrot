@@ -30,7 +30,7 @@ import java.nio.charset.StandardCharsets
         .mkString(" ")
       val branchName = repo.branchName
 
-      val branch = repo.upstream match {
+      val branch = "\uE0A0" + (repo.upstream match {
         case Some(upstream) =>
           val branch = for {
             upstream <- repo.upstreamName
@@ -50,14 +50,15 @@ import java.nio.charset.StandardCharsets
           branch.getOrElse(s"$branchName 💀")
         case None =>
           s"$branchName ❓"
-      }
-      val right = s"$diffs $branch "
+      })
+      val right = s" $diffs"
 
-      s"$pwd ${fill * (spaces - pwd.size - right.size)} $right"
+      s"${Console.REVERSED}${Console.BLUE}${Console.WHITE_B}$pwd${Console.GREEN}${Console.BLUE_B}\uE0C0 ${Console.BOLD} $branch${Console.GREEN_B}${Console.BLACK}\uE0C0 ${Console.RESET}${fill * (spaces - pwd.size - 5 - branch.size - right.size)} $right"
 
     } match
       case None        => println(pwd)
       case Some(value) => println(value)
+    println()
 
     git_libgit2_shutdown()
   }
