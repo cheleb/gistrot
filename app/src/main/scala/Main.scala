@@ -1,3 +1,5 @@
+import fansi.*
+import fansi.Color.*
 import libgit.functions.*
 import libgit.types.*
 
@@ -52,8 +54,14 @@ import java.nio.charset.StandardCharsets
           s"$branchName ❓"
       })
       val right = s" $diffs"
+      val path = Reversed.On(
+        Bold.On(
+          Blue(Back.White(pwd + " ")) ++ Green(Back.Blue("\uE0C0 ")) ++
+            Green(" " + branch) ++ Black(Back.Green("\uE0C0 "))
+        )
+      )
 
-      s"${Console.REVERSED}${Console.BLUE}${Console.WHITE_B}$pwd${Console.GREEN}${Console.BLUE_B}\uE0C0 ${Console.BOLD} $branch${Console.GREEN_B}${Console.BLACK}\uE0C0 ${Console.RESET}${fill * (spaces - pwd.size - 5 - branch.size - right.size)} $right"
+      s"$path${fill * (spaces - path.length - right.length)}$right"
 
     } match
       case None        => println(pwd)
