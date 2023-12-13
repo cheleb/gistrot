@@ -14,10 +14,23 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
 @main def gistrotPrompt(spaces: Int, fill: String) =
+
+  val project =
+    if os.exists(os.pwd / "build.sbt") then Back.LightRed(Green("\ue737"))
+    else Str("")
+
   val pwd =
-    if (os.pwd.startsWith(os.home)) then
-      s"~/${os.pwd.relativeTo(os.home).toString}"
-    else os.pwd.toString
+    Reversed.On(
+      Bold.Off(
+        Back.White(
+          if (os.pwd.startsWith(os.home)) then
+            Blue(
+              "\ue0c6 /" + os.pwd.relativeTo(os.home).toString
+            )
+          else LightGray("\ueb06 ") ++ Blue(os.pwd.toString)
+        )
+      )
+    )
 
   Zone { implicit z =>
     git_libgit2_init()
@@ -54,9 +67,9 @@ import java.nio.charset.StandardCharsets
           s"$branchName ❓"
       })
       val right = s" $diffs"
-      val path = Reversed.On(
+      val path = pwd ++ Reversed.On(
         Bold.On(
-          Blue(Back.White(pwd + " ")) ++ Green(Back.Blue("\uE0C0 ")) ++
+          Green(Back.Blue("\uE0C0 ")) ++ project ++
             Green(" " + branch) ++ Black(Back.Green("\uE0C0 "))
         )
       )

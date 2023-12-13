@@ -15,3 +15,7 @@ To use a specific version of sn-bindgen, set the `SN_BINDGEN_VERSION` environmen
 ```shell
 SN_BINDGEN_VERSION='0.0.6+10-20783bcd-SNAPSHOT' sbt 
 ```
+
+## Nerd font 
+
+* https://www.nerdfonts.com/cheat-sheet
