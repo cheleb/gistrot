@@ -12,25 +12,21 @@ import scala.scalanative.unsigned.*
 import libgit2.*
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
-
+//
+// ++ Black(Back.Green("\uE0C0 "))
+//
 @main def gistrotPrompt(spaces: Int, fill: String) =
 
   val project =
-    if os.exists(os.pwd / "build.sbt") then Back.LightRed(Green("\ue737"))
+    if os.exists(os.pwd / "build.sbt") then LightRed(" \ue737")
     else Str("")
 
   val pwd =
-    Reversed.On(
-      Bold.Off(
-        Back.White(
-          if (os.pwd.startsWith(os.home)) then
-            Blue(
-              "\ue0c6 /" + os.pwd.relativeTo(os.home).toString
-            )
-          else LightGray("\ueb06 ") ++ Blue(os.pwd.toString)
-        )
+    if (os.pwd.startsWith(os.home)) then
+      Blue(
+        "\ue0c6 /" + os.pwd.relativeTo(os.home).toString
       )
-    )
+    else LightGray("\ueb06 ") ++ Blue(os.pwd.toString)
 
   Zone { implicit z =>
     git_libgit2_init()
@@ -67,19 +63,15 @@ import java.nio.charset.StandardCharsets
           s"$branchName ❓"
       })
       val right = s" $diffs"
-      val path = pwd ++ Reversed.On(
-        Bold.On(
-          Green(Back.Blue("\uE0C0 ")) ++ project ++
-            Green(" " + branch) ++ Black(Back.Green("\uE0C0 "))
-        )
-      )
+      val path = pwd ++
+        project ++
+        Green(" " + branch)
 
       s"$path${fill * (spaces - path.length - right.length)}$right"
 
     } match
       case None        => println(pwd)
       case Some(value) => println(value)
-    println()
 
     git_libgit2_shutdown()
   }
