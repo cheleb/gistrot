@@ -14,7 +14,7 @@ inThisBuild(
     scalaVersion := "3.4.2",
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
-    libraryDependencies += "org.scala-native" %% "junit-runtime_native0.4" % "0.4.8" % Test,
+    libraryDependencies += "org.scala-native" %% "junit-runtime_native0.5.0-RC2" % "0.5.0-RC2" % Test,
 //    scalacOptions += "-deprecation",
     addCompilerPlugin(
       "org.scala-native" % "junit-plugin" % nativeVersion cross CrossVersion.full
@@ -64,14 +64,14 @@ lazy val libgit2 = project
         .withCompileOptions(
           conf.compileOptions ++ List(s"-I$headersFolder")
         )
-    },
-    libraryDependencies += "com.outr" %%% "scribe" % scribeVersion
+    }
+    //libraryDependencies += "com.outr" %%% "scribe" % scribeVersion
   )
 
 lazy val gistrot = project
   .in(file("app"))
   .settings(
-    nativeLinkStubs := true,
+    // nativeLinkStubs := true,
     nativeConfig ~= {
       _.withLTO(LTO.default)
         .withMode(Mode.releaseSize)
