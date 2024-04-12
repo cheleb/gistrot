@@ -9,7 +9,7 @@ import scala.scalanative.unsigned.*
 import scala.collection.MapView
 
 import scala.scalanative.libc.stdio
-import scala.scalanative.runtime.libc
+import scala.scalanative.runtime
 
 enum FileStatus(val icon: String):
   override def toString: String = icon

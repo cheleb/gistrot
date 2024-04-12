@@ -1,5 +1,5 @@
-import fansi.*
-import fansi.Color.*
+// import fansi.*
+// import fansi.Color.*
 import libgit.functions.*
 import libgit.types.*
 
@@ -17,19 +17,28 @@ import java.nio.charset.StandardCharsets
 //
 @main def gistrotPrompt(spaces: Int, fill: String) =
 
-  val project =
-    if os.exists(os.pwd / "build.sbt") then LightRed(" \ue737")
-    else Str("")
+  println("cococococo")
+  val project = "zozo"
+  // if os.exists(os.pwd / "build.sbt") then LightRed(" \ue737")
+  // else Str("")
+  // if os.exists(os.pwd / "build.sbt") then " \ue737"
+  // else ""
 
-  val pwd =
-    if (os.pwd.startsWith(os.home)) then
-      Blue(
-        "\ue0c6 /" + os.pwd.relativeTo(os.home).toString
-      )
-    else LightGray("\ueb06 ") ++ Blue(os.pwd.toString)
+  // val pwd =
+  //   if (os.pwd.startsWith(os.home)) then
+  //     Blue(
+  //       "\ue0c6 /" + os.pwd.relativeTo(os.home).toString
+  //     )
+  //   else LightGray("\ueb06 ") ++ Blue(os.pwd.toString)
+  val pwd = ""
+  // if (os.pwd.startsWith(os.home)) then
 
-  Zone { implicit z =>
+  //   "\ue0c6 /" + os.pwd.relativeTo(os.home).toString
+  // else "\ueb06 " ++ os.pwd.toString
+
+  Zone { implicit z: Zone =>
     git_libgit2_init()
+    println("cococococo")
 
     LibGit2.repo(c".").map { repo =>
 
@@ -65,7 +74,8 @@ import java.nio.charset.StandardCharsets
       val right = s" $diffs"
       val path = pwd ++
         project ++
-        Green(" " + branch)
+        // Green(" " + branch)
+        " " + branch
 
       s"$path${fill * (spaces - path.length - right.length)}$right"
 
