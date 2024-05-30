@@ -78,7 +78,7 @@ lazy val gistrot = project
     },
     libraryDependencies += "com.outr" %%% "scribe" % scribeVersion,
 //    libraryDependencies += "com.monovore" %%% "decline" % "2.4.1",
-    libraryDependencies += "com.lihaoyi" %%% "os-lib" % "0.10.1",
+    libraryDependencies += "com.lihaoyi" %%% "os-lib" % "0.10.2",
     libraryDependencies += "com.lihaoyi" %%% "fansi" % "0.5.0"
   )
   .enablePlugins(ScalaNativePlugin)
