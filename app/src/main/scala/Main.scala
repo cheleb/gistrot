@@ -70,7 +70,7 @@ import java.nio.charset.StandardCharsets
         project ++
         Green(" " + branch)
 
-      s"$path${fill * (spaces - path.length - right.length)}$right"
+      s"$path ${fill * (spaces - 1 - path.length - right.length)}$right"
 
     } match
       case None        => println(pwd)
