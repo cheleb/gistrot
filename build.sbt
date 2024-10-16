@@ -11,7 +11,7 @@ inThisBuild(
     resolvers ++= Resolver.sonatypeOssRepos("snapshots"),
     scalacOptions ++= Seq("-Yexplicit-nulls", "-Xfatal-warnings"),
     scalafmtOnCompile := true,
-    scalaVersion := "3.5.1",
+    scalaVersion := "3.5.2",
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
     libraryDependencies += "org.scala-native" %% "junit-runtime_native0.5" % "0.5.5" % Test,
