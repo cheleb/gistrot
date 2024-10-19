@@ -4,7 +4,7 @@ import bindgen.interface.LogLevel
 
 import java.nio.file.Paths
 
-val scribeVersion = "3.15.0"
+val scribeVersion = "3.15.1"
 
 inThisBuild(
   Seq(
