@@ -1,3 +1,4 @@
+import java.nio.charset.StandardCharsets
 import bindgen.interface.Binding
 import scala.scalanative.build._
 import bindgen.interface.LogLevel
@@ -83,3 +84,18 @@ lazy val gistrot = project
   )
   .enablePlugins(ScalaNativePlugin)
   .dependsOn(libgit2)
+
+Global / onLoad := {
+  val scalaVersionValue = (gistrot / scalaVersion).value
+  val outputFile =
+    target.value / "build-env.sh"
+    IO.writeLines(
+      outputFile,
+      s"""  
+         |# Generated file see build.sbt
+         |SCALA_VERSION="$scalaVersionValue"
+         |""".stripMargin.split("\n").toList,
+      StandardCharsets.UTF_8
+    )
+  (Global / onLoad).value
+}

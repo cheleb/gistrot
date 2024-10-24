@@ -2,7 +2,7 @@ addSbtPlugin("org.scala-native" % "sbt-scala-native" % "0.5.5")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.5.2")
 
 val BindgenVersion =
-  sys.env.getOrElse("SN_BINDGEN_VERSION", "0.1.2")
+  sys.env.getOrElse("SN_BINDGEN_VERSION", "0.1.4")
 
 resolvers ++= Resolver.sonatypeOssRepos("snapshots")
 
