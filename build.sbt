@@ -88,7 +88,7 @@ lazy val gistrot = project
 Global / onLoad := {
   val scalaVersionValue = (gistrot / scalaVersion).value
   val outputFile =
-    target.value / "build-env.sh"
+    baseDirectory.value / "build-env.sh"
     IO.writeLines(
       outputFile,
       s"""  
