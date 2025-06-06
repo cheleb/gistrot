@@ -92,7 +92,7 @@ case class Repo(
           case st if st.is(GIT_STATUS_INDEX_MODIFIED) => FileStatus.INDEX_NEW
           case st if st.is(GIT_STATUS_INDEX_DELETED)  => FileStatus.INDEX_DELETE
           case st if st.is(GIT_STATUS_WT_DELETED)     => FileStatus.WT_DELETED
-          case o =>
+          case o                                      =>
             FileStatus.OTHER
         }
 
