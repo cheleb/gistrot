@@ -15,7 +15,7 @@ inThisBuild(
     scalaVersion := "3.7.3",
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
-    libraryDependencies += "org.scala-native" %% "junit-runtime_native0.5" % "0.5.8" % Test,
+    libraryDependencies += "org.scala-native" %% "junit-runtime_native0.5" % "0.5.9" % Test,
 //    scalacOptions += "-deprecation",
     addCompilerPlugin(
       "org.scala-native" % "junit-plugin" % nativeVersion cross CrossVersion.full
