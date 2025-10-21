@@ -7,9 +7,13 @@ import java.nio.file.Paths
 
 val scribeVersion = "3.17.0"
 
+name := "gistrot"
+
+description := "A git-aware prompt for Scala Native"
+
 inThisBuild(
   Seq(
-    resolvers ++= Resolver.sonatypeOssRepos("snapshots"),
+    resolvers += Resolver.sonatypeCentralSnapshots,
     scalacOptions ++= Seq("-Yexplicit-nulls", "-Xfatal-warnings"),
     scalafmtOnCompile := true,
     scalaVersion := "3.7.3",
@@ -65,7 +69,7 @@ lazy val libgit2 = project
           conf.compileOptions ++ List(s"-I$headersFolder")
         )
     }
-    //libraryDependencies += "com.outr" %%% "scribe" % scribeVersion
+    // libraryDependencies += "com.outr" %%% "scribe" % scribeVersion
   )
 
 lazy val gistrot = project
@@ -89,13 +93,13 @@ Global / onLoad := {
   val scalaVersionValue = (gistrot / scalaVersion).value
   val outputFile =
     baseDirectory.value / "build-env.sh"
-    IO.writeLines(
-      outputFile,
-      s"""  
+  IO.writeLines(
+    outputFile,
+    s"""  
          |# Generated file see build.sbt
          |SCALA_VERSION="$scalaVersionValue"
          |""".stripMargin.split("\n").toList,
-      StandardCharsets.UTF_8
-    )
+    StandardCharsets.UTF_8
+  )
   (Global / onLoad).value
 }
