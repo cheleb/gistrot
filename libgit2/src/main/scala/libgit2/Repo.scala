@@ -49,7 +49,6 @@ case class Repo(
     }
   def upstreamStatus(using z: Zone): Option[(Int, Int)] =
     upstream.map { upstream =>
-
       val ahead = alloc[size_t](1)
       val behind = alloc[size_t](1)
 

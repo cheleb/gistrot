@@ -35,7 +35,6 @@ import java.nio.charset.StandardCharsets
     git_libgit2_init()
 
     LibGit2.repo(c".").map { repo =>
-
       val diffs = repo
         .diffs()
         .map { case (st, count) =>
