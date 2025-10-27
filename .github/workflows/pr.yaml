@@ -4,4 +4,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: WorldOfScala/actions/compile@master
+     - name: Checkout code
+       uses: actions/checkout@v3
+       with:
+         submodules: true  
+     - name: Setup Unix-like
+       run: ./build/setup_unix.sh
+     - name: Sets env vars for LLVM
+       run: |
+          echo "LLVM_BIN=/usr/lib/llvm-$LLVM_VERSION/bin" >> $GITHUB_ENV
+  
+     - uses: WorldOfScala/actions/compile@master
+       with:
+         checkout: false
+
