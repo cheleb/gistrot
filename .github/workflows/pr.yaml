@@ -1,5 +1,7 @@
 on:
   pull_request:
+env:
+  LLVM_VERSION: 21
 jobs:
   build:
     runs-on: ubuntu-latest
