@@ -1,5 +1,5 @@
 addSbtPlugin("org.scala-native" % "sbt-scala-native" % "0.5.9")
-addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.5.5")
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.5.6")
 
 val BindgenVersion =
   sys.env.getOrElse("SN_BINDGEN_VERSION", "0.2.3")
