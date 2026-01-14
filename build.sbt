@@ -14,7 +14,7 @@ description := "A git-aware prompt for Scala Native"
 inThisBuild(
   Seq(
     resolvers += Resolver.sonatypeCentralSnapshots,
-    scalacOptions ++= Seq("-Yexplicit-nulls", "-Xfatal-warnings"),
+    scalacOptions ++= Seq("-Yexplicit-nulls", "-Werror"),
     scalafmtOnCompile := true,
     scalaVersion := "3.8.0",
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
