@@ -5,7 +5,7 @@ import bindgen.interface.LogLevel
 
 import java.nio.file.Paths
 
-val scribeVersion = "3.18.0"
+val scribeVersion = "3.19.0"
 
 name := "gistrot"
 
