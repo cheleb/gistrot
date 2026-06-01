@@ -15,7 +15,7 @@ inThisBuild(
   Seq(
     scalacOptions ++= Seq("-Yexplicit-nulls", "-Werror"),
     scalafmtOnCompile := true,
-    scalaVersion := "3.8.3",
+    scalaVersion := "3.8.4",
     libraryDependencies += "com.novocode" % "junit-interface" % Versions.junit % Test,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
     libraryDependencies += "org.scala-native" %% "junit-runtime_native0.5" % "0.5.12" % Test,
