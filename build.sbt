@@ -68,7 +68,7 @@ lazy val libgit2 = project
           conf.compileOptions ++ List(s"-I$headersFolder")
         )
     }
-    // libraryDependencies += "com.outr" %%% "scribe" % scribeVersion
+    // libraryDependencies += "com.outr" %% "scribe" % scribeVersion
   )
 
 lazy val gistrot = project
@@ -80,10 +80,10 @@ lazy val gistrot = project
         .withMode(Mode.releaseSize)
         .withGC(GC.none)
     },
-    libraryDependencies += "com.outr" %%% "scribe" % scribeVersion,
-//    libraryDependencies += "com.monovore" %%% "decline" % "2.4.1",
-    libraryDependencies += "com.lihaoyi" %%% "os-lib" % "0.11.8",
-    libraryDependencies += "com.lihaoyi" %%% "fansi" % "0.5.1"
+    libraryDependencies += "com.outr" %% "scribe" % scribeVersion,
+//    libraryDependencies += "com.monovore" %% "decline" % "2.4.1",
+    libraryDependencies += "com.lihaoyi" %% "os-lib" % "0.11.8",
+    libraryDependencies += "com.lihaoyi" %% "fansi" % "0.5.1"
   )
   .enablePlugins(ScalaNativePlugin)
   .dependsOn(libgit2)
